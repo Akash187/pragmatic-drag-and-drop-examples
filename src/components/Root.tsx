@@ -7,24 +7,85 @@ import {
 	Container,
 	Group,
 	NavLink,
+	Stack,
 	Title
 } from '@mantine/core'
 import { Link, Outlet, useLocation } from 'react-router-dom'
 import { IconBrandGithub, IconChevronRight } from '@tabler/icons-react'
 
-const links: { title: string; link: string }[] = [
-	{ title: 'Chess', link: '/chess' },
-	{ title: 'List', link: '/list' },
-	{ title: 'Grid', link: '/grid' },
-	{ title: 'Board', link: '/board' },
-	{ title: 'Board With Auto Scroll', link: '/board-with-autoscroll' },
-	{ title: 'Board With New Auto Scroll', link: '/board-with-new-autoscroll' },
-	{ title: 'Drop File', link: '/file' },
-	{ title: 'Drawing', link: '/drawing' },
-	{ title: 'Post Drop Flash Prototype', link: '/post-drop-flash-prototype' },
-	{ title: 'Resizing', link: '/resizing' },
-	{ title: 'Table', link: '/table' },
-	{ title: 'Tree', link: '/tree' }
+const links: { title: string; link: string; source: string }[] = [
+	{
+		title: 'Chess',
+		link: '/chess',
+		source:
+			'https://github.com/Akash187/pragmatic-drag-and-drop-examples/blob/main/src/examples/chess.tsx'
+	},
+	{
+		title: 'List',
+		link: '/list',
+		source:
+			'https://github.com/Akash187/pragmatic-drag-and-drop-examples/blob/main/src/examples/list.tsx'
+	},
+	{
+		title: 'Grid',
+		link: '/grid',
+		source:
+			'https://github.com/Akash187/pragmatic-drag-and-drop-examples/blob/main/src/examples/grid.tsx'
+	},
+	{
+		title: 'Board',
+		link: '/board',
+		source:
+			'https://github.com/Akash187/pragmatic-drag-and-drop-examples/blob/main/src/examples/board.tsx'
+	},
+	{
+		title: 'Board With Auto Scroll',
+		link: '/board-with-autoscroll',
+		source:
+			'https://github.com/Akash187/pragmatic-drag-and-drop-examples/blob/main/src/examples/board-with-autoscroll.tsx'
+	},
+	{
+		title: 'Board With New Auto Scroll',
+		link: '/board-with-new-autoscroll',
+		source:
+			'https://github.com/Akash187/pragmatic-drag-and-drop-examples/blob/main/src/examples/board-with-new-autoscroll.tsx'
+	},
+	{
+		title: 'Drop File',
+		link: '/file',
+		source:
+			'https://github.com/Akash187/pragmatic-drag-and-drop-examples/blob/main/src/examples/file.tsx'
+	},
+	{
+		title: 'Drawing',
+		link: '/drawing',
+		source:
+			'https://github.com/Akash187/pragmatic-drag-and-drop-examples/blob/main/src/examples/drawing.tsx'
+	},
+	{
+		title: 'Post Drop Flash Prototype',
+		link: '/post-drop-flash-prototype',
+		source:
+			'https://github.com/Akash187/pragmatic-drag-and-drop-examples/blob/main/src/examples/flash-prototype.tsx'
+	},
+	{
+		title: 'Resizing',
+		link: '/resizing',
+		source:
+			'https://github.com/Akash187/pragmatic-drag-and-drop-examples/blob/main/src/examples/resizing.tsx'
+	},
+	{
+		title: 'Table',
+		link: '/table',
+		source:
+			'https://github.com/Akash187/pragmatic-drag-and-drop-examples/blob/main/src/examples/table.tsx'
+	},
+	{
+		title: 'Tree',
+		link: '/tree',
+		source:
+			'https://github.com/Akash187/pragmatic-drag-and-drop-examples/blob/main/src/examples/tree.tsx'
+	}
 ]
 
 const Root = () => {
@@ -60,7 +121,12 @@ const Root = () => {
 								Home
 							</Anchor>
 						</Group>
-						<ActionIcon radius="xl">
+						<ActionIcon
+							component="a"
+							href="https://github.com/Akash187/pragmatic-drag-and-drop-examples"
+							target="_blank"
+							radius="xl"
+						>
 							<IconBrandGithub
 								style={{ width: '70%', height: '70%' }}
 								stroke={1.5}
@@ -83,7 +149,14 @@ const Root = () => {
 				))}
 			</AppShell.Navbar>
 			<AppShell.Main>
-				<Outlet />
+				<Stack>
+					{links.map((link) => {
+						if (link.link === location.pathname) {
+							return <Anchor href={link.source}>Source Code</Anchor>
+						}
+					})}
+					<Outlet />
+				</Stack>
 			</AppShell.Main>
 		</AppShell>
 	)

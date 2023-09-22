@@ -1,4 +1,3 @@
-import Chessboard from './examples/chess'
 import '@mantine/core/styles.css'
 
 import { MantineProvider } from '@mantine/core'
