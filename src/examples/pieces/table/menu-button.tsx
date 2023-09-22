@@ -1,0 +1,112 @@
+import { forwardRef, useCallback, useContext } from 'react'
+
+import { css, jsx } from '@emotion/react'
+
+import { DropdownItem, DropdownItemGroup } from '@atlaskit/dropdown-menu'
+import { DragHandleDropdownMenu } from '@atlaskit/pragmatic-drag-and-drop-react-accessibility/drag-handle-dropdown-menu'
+
+import { TableContext } from './table-context'
+
+const baseMenuButtonWrapperStyles = css({
+	width: 'max-content',
+	height: '100%',
+	position: 'absolute',
+	top: 0,
+	display: 'grid',
+	alignContent: 'center',
+	gridTemplateRows: '24px'
+})
+
+const rowMenuButtonWrapperStyles = css({
+	left: 8
+})
+
+// The column button has a bit more spacing than the row button,
+// to avoid conflict with the resize handle
+const columnMenuButtonWrapperStyles = css({
+	right: 12
+})
+
+export const RowMenuButton = forwardRef<
+	HTMLButtonElement,
+	{
+		rowIndex: number
+		amountOfRows: number
+	}
+>(function RowMenuButton({ rowIndex, amountOfRows }, ref) {
+	const { reorderItem } = useContext(TableContext)
+
+	const moveUp = useCallback(() => {
+		reorderItem({
+			startIndex: rowIndex,
+			indexOfTarget: rowIndex - 1
+		})
+	}, [reorderItem, rowIndex])
+
+	const moveDown = useCallback(() => {
+		reorderItem({
+			startIndex: rowIndex,
+			indexOfTarget: rowIndex + 1
+		})
+	}, [reorderItem, rowIndex])
+
+	const isFirstRow = rowIndex === 0
+	const isLastRow = rowIndex === amountOfRows - 1
+
+	return (
+		<div css={[baseMenuButtonWrapperStyles, rowMenuButtonWrapperStyles]}>
+			<DragHandleDropdownMenu triggerRef={ref} label="Reorder">
+				<DropdownItemGroup>
+					<DropdownItem isDisabled={isFirstRow} onClick={moveUp}>
+						Move up
+					</DropdownItem>
+					<DropdownItem isDisabled={isLastRow} onClick={moveDown}>
+						Move down
+					</DropdownItem>
+				</DropdownItemGroup>
+			</DragHandleDropdownMenu>
+		</div>
+	)
+})
+
+export const ColumnMenuButton = forwardRef<
+	HTMLButtonElement,
+	{
+		columnIndex: number
+		amountOfHeaders: number
+	}
+>(function ColumnMenuButton({ columnIndex, amountOfHeaders }, ref) {
+	const { reorderColumn } = useContext(TableContext)
+
+	const moveLeft = useCallback(() => {
+		reorderColumn({
+			startIndex: columnIndex,
+			indexOfTarget: columnIndex - 1
+		})
+	}, [reorderColumn, columnIndex])
+
+	const moveRight = useCallback(() => {
+		reorderColumn({
+			startIndex: columnIndex,
+			indexOfTarget: columnIndex + 1
+		})
+	}, [reorderColumn, columnIndex])
+
+	const isFirstColumn = columnIndex === 0
+	const isLastColumn = columnIndex === amountOfHeaders - 1
+
+	return (
+		<div css={[baseMenuButtonWrapperStyles, columnMenuButtonWrapperStyles]}>
+			<DragHandleDropdownMenu triggerRef={ref} label="Reorder">
+				<DropdownItemGroup>
+					<DropdownItem isDisabled={isFirstColumn} onClick={moveLeft}>
+						Move left
+					</DropdownItem>
+					<DropdownItem isDisabled={isLastColumn} onClick={moveRight}>
+						Move right
+					</DropdownItem>
+				</DropdownItemGroup>
+			</DragHandleDropdownMenu>
+		</div>
+	)
+})
